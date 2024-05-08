@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import './TrafficLight.css';
 
 // Задача 1: Компонент SelectBox с городами и сообщением
 const SelectBoxWithCities = () => {
@@ -24,11 +23,12 @@ const SelectBoxWithCities = () => {
 };
 
 // Задача 2: Компонент Calculator с двумя полями ввода и результатом
+
 const Calculator = () => {
-  const [num1, setNum1] = React.useState('');
-  const [num2, setNum2] = React.useState('');
-  const [operation, setOperation] = React.useState('+');
-  const [result, setResult] = React.useState('');
+  const [num1, setNum1] = useState('');
+  const [num2, setNum2] = useState('');
+  const [operation, setOperation] = useState('+');
+  const [result, setResult] = useState('');
 
   const handleNum1Change = (e) => {
     setNum1(e.target.value);
@@ -47,18 +47,23 @@ const Calculator = () => {
     const n2 = parseFloat(num2);
 
     if (!isNaN(n1) && !isNaN(n2)) {
+      let calculatedResult;
       switch (operation) {
         case '+':
-          setResult(n1 + n2);
+          calculatedResult = n1 + n2;
+          setResult(`${n1} + ${n2} = ${calculatedResult}`);
           break;
         case '-':
-          setResult(n1 - n2);
+          calculatedResult = n1 - n2;
+          setResult(`${n1} - ${n2} = ${calculatedResult}`);
           break;
         case '*':
-          setResult(n1 * n2);
+          calculatedResult = n1 * n2;
+          setResult(`${n1} * ${n2} = ${calculatedResult}`);
           break;
         case '/':
-          setResult(n1 / n2);
+          calculatedResult = n1 / n2;
+          setResult(`${n1} / ${n2} = ${calculatedResult}`);
           break;
         default:
           setResult('');
@@ -83,65 +88,88 @@ const Calculator = () => {
     </div>
   );
 };
-// Задача 3: Вывод простых чисел с задержкой
-const PrimeNumbersDisplay = () => {
-  const [primeNumbers, setPrimeNumbers] = React.useState([]);
 
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      const nextPrime = findNextPrime(primeNumbers[primeNumbers.length - 1] || 1);
-      setPrimeNumbers(prevNumbers => [...prevNumbers, nextPrime]);
-    }, 1000);
+// Задача 3: Калькулятор чисел с основанием
+const NumbersInBaseCalculator = () => {
+  const [number, setNumber] = useState('');
+  const [base, setBase] = useState(10);
+  const [result, setResult] = useState('');
 
-    return () => clearInterval(interval);
-  }, [primeNumbers]);
-
-  const findNextPrime = (num) => {
-    let next = num + 1;
-    while (!isPrime(next)) {
-      next++;
-    }
-    return next;
+  const handleChange = (event) => {
+    setNumber(event.target.value);
   };
 
-  const isPrime = (num) => {
-    for (let i = 2; i <= Math.sqrt(num); i++) {
-      if (num % i === 0) return false;
+  const handleBaseChange = (event) => {
+    setBase(parseInt(event.target.value));
+  };
+
+  const convertToBase = (number, base) => {
+    if (!Number.isInteger(Number(number)) || base < 2 || base > 36) {
+      return 'Invalid input';
     }
-    return num > 1;
+    return parseInt(number, 10).toString(base);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setResult(convertToBase(number, base));
   };
 
   return (
     <div>
-      {primeNumbers.map((number, index) => (
-        <span key={index}>{number}, </span>
-      ))}
+      <form onSubmit={handleSubmit}>
+        <label>
+          Число:
+          <input type="text" value={number} onChange={handleChange} />
+        </label>
+        <label>
+          Основание:
+          <input type="text" value={base} onChange={handleBaseChange} />
+        </label>
+        <button type="submit">Перевести</button>
+      </form>
+      <div>
+        Результат: {result}
+      </div>
     </div>
   );
 };
 
+
 // Задача 4: Калькулятор прожитых секунд
 const AgeCalculator = () => {
-  const [secondsLived, setSecondsLived] = useState(0);
+  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [ageInSeconds, setAgeInSeconds] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const birthDate = new Date('1990-01-01'); // Replace with the user's birth date
-      const currentDate = new Date();
-      const differenceInSeconds = Math.floor((currentDate - birthDate) / 1000);
-      setSecondsLived(differenceInSeconds);
-    }, 1000); // Update every second
+      setAgeInSeconds((prevSeconds) => prevSeconds + 1);
+    }, 1000);
 
     return () => clearInterval(interval);
   }, []);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const birthDate = new Date(dateOfBirth);
+    const currentDateTime = new Date();
+    const ageInSeconds = (currentDateTime - birthDate) / 1000;
+    setAgeInSeconds(ageInSeconds);
+  };
+
   return (
     <div>
       <h2>Калькулятор возраста</h2>
-      <p>Вы прожили: {secondsLived} секунд</p>
+      <form onSubmit={handleSubmit}>
+        <label>Дата рождения:</label>
+        <input type="date" value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} />
+        <button type="submit">Вычислить возраст</button>
+      </form>
+      <p>Вы прожили: {ageInSeconds} секунд.</p>
     </div>
   );
 };
+
 
 // Задача 5: Список чисел с фильтром
 const NumberListWithFilter = () => {
@@ -308,14 +336,15 @@ function App() {
   return (
     <div>
       <h1>Задачи про формы</h1>
+
       <h2>Задача 1: Не Рио-Де-Жанейро</h2>
       <SelectBoxWithCities />
       
       <h2>Задача 2: Калькулятор</h2>
       <Calculator />
       
-      <h2>Задача 3: Вывод простых чисел </h2>
-      <PrimeNumbersDisplay />
+      <h2>Задача 3: Калькулятор чисел с основанием </h2>
+      <NumbersInBaseCalculator />
       
       <h2>Задача 4: Калькулятор прожитых секунд</h2>
       <AgeCalculator />
@@ -325,6 +354,7 @@ function App() {
 
 
       <h1>Задачи про валидацию</h1>
+
       <h2>Задача 1: Регистрационная форма</h2>
       <RegistrationForm />
 
