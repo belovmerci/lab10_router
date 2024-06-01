@@ -370,7 +370,7 @@ function App() {
         </div>
         } />
         <Route path='/' element={<div>Welcome to the application!</div>} />
-        <Route path='*' element={<div>404 Page Not Found</div>} />
+        <Route path="*" element={<Navigate to="/" replace />} />
 
       </Routes>
     </Router>

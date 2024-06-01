@@ -1,0 +1,10 @@
+Initial commit, full functionality
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch master
+# Your branch is ahead of 'newreact/master' by 3 commits.
+#   (use "git push" to publish your local commits)
+#
+# Changes to be committed:
+#	modified:   src/App.js
+#
