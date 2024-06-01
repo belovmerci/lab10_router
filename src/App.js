@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 // Задача 1: Компонент SelectBox с городами и сообщением
 const SelectBoxWithCities = () => {
@@ -334,33 +335,45 @@ const ProfileEditForm = () => {
 
 function App() {
   return (
-    <div>
-      <h1>Задачи про формы</h1>
+    <Router>
+      <Routes>
+        <Route path='forms' element={
+          <div>
+          <h1>Задачи про формы</h1>
+    
+          <h2>Задача 1: Не Рио-Де-Жанейро</h2>
+          <SelectBoxWithCities />
+          
+          <h2>Задача 2: Калькулятор</h2>
+          <Calculator />
+          
+          <h2>Задача 3: Калькулятор чисел с основанием </h2>
+          <NumbersInBaseCalculator />
+          
+          <h2>Задача 4: Калькулятор прожитых секунд</h2>
+          <AgeCalculator />
+    
+          <h2>Задача 5: Список чисел с фильтром</h2>
+          <NumberListWithFilter />
+          </div>
+        } />
 
-      <h2>Задача 1: Не Рио-Де-Жанейро</h2>
-      <SelectBoxWithCities />
-      
-      <h2>Задача 2: Калькулятор</h2>
-      <Calculator />
-      
-      <h2>Задача 3: Калькулятор чисел с основанием </h2>
-      <NumbersInBaseCalculator />
-      
-      <h2>Задача 4: Калькулятор прожитых секунд</h2>
-      <AgeCalculator />
+        <Route path='validation' element={
+        <div>
+        <h1>Задачи про валидацию</h1>
 
-      <h2>Задача 5: Список чисел с фильтром</h2>
-      <NumberListWithFilter />
+        <h2>Задача 1: Регистрационная форма</h2>
+        <RegistrationForm />
 
+        <h2>Задача 2 : Форма редактирования</h2>
+        <ProfileEditForm />
+        </div>
+        } />
+        <Route path='/' element={<div>Welcome to the application!</div>} />
+        <Route path='*' element={<div>404 Page Not Found</div>} />
 
-      <h1>Задачи про валидацию</h1>
-
-      <h2>Задача 1: Регистрационная форма</h2>
-      <RegistrationForm />
-
-      <h2>Задача 2 : Форма редактирования</h2>
-      <ProfileEditForm />
-    </div>
+      </Routes>
+    </Router>
   );
 }
 
